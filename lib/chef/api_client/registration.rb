@@ -33,11 +33,10 @@ class Chef
       attr_reader :destination
       attr_reader :name
 
-      def initialize(name, destination, opts = {})
-        opts ||= {}
+      def initialize(name, destination, http_api: nil)
         @name                         = name
         @destination                  = destination
-        @http_api                     = opts[:http_api]
+        @http_api                     = http_api
         @server_generated_private_key = nil
       end
 

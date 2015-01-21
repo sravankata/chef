@@ -394,7 +394,7 @@ class Chef
           ui.info("")
         end
 
-        ui.info("Connecting to #{ui.color(connection_server_name, :bold)}")
+        ui.info("Connecting to #{ui.color(server_name, :bold)}")
 
         begin
           knife_ssh.run
@@ -409,25 +409,25 @@ class Chef
       end
 
       def validate_name_args!
-        if connection_server_name.nil?
+        if server_name.nil?
           ui.error("Must pass an FQDN or ip to bootstrap")
           exit 1
-        elsif connection_server_name == "windows"
+        elsif server_name == "windows"
           # catches "knife bootstrap windows" when that command is not installed
           ui.warn("Hostname containing 'windows' specified. Please install 'knife-windows' if you are attempting to bootstrap a Windows node via WinRM.")
         end
       end
 
-      # connection_server_name is the DNS or IP we are going to connect to, it is not necessarily
+      # the server_name is the DNS or IP we are going to connect to, it is not necessarily
       # the node name, the fqdn, or the hostname of the server
-      def connection_server_name
+      def server_name
         Array(@name_args).first
       end
 
       def knife_ssh
         ssh = Chef::Knife::Ssh.new
         ssh.ui = ui
-        ssh.name_args = [ connection_server_name, ssh_command ]
+        ssh.name_args = [ server_name, ssh_command ]
         ssh.config[:ssh_user] = config[:ssh_user]
         ssh.config[:ssh_password] = config[:ssh_password]
         ssh.config[:ssh_port] = config[:ssh_port]
